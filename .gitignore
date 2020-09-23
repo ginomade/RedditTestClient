@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /build
 # Windows thumbnail db
 Thumbs.db
@@ -118,4 +117,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
->>>>>>> 6cac8239f38463fee92187abfd2be5f9ef196567
