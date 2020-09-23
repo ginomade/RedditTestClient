@@ -1,0 +1,34 @@
+/build
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.gradle
+/*/local.properties
+/*/out
+/*/*/build
+build
+/*/*/production
+*.iml
+*.iws
+*.ipr
+*~
+*.swp
