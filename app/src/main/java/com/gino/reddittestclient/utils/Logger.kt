@@ -7,7 +7,7 @@ import android.util.Log
  */
 object Logger {
 
-    private const val TAG = "Keddit"
+    private const val TAG = "Reddit_client"
 
     /**
      * dt: Debug with Thread details.

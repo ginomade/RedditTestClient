@@ -23,4 +23,4 @@ fun ImageView.loadImg(imageUrl: String) {
     }
 }
 
-fun <T> androidLazy(initializer: () -> T) : Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)
+fun <T> androidLazy(initializer: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)

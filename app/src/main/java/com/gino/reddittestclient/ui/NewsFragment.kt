@@ -1,7 +1,5 @@
 package com.gino.reddittestclient.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,16 +19,20 @@ import javax.inject.Inject
 /**
  * @author gino.ghiotto
  */
-class NewsFragment : Fragment(), NewsDelegateAdapter.onViewSelectedListener {
+class NewsFragment() : Fragment(), NewsDelegateAdapter.onViewSelectedListener {
 
-    override fun onItemSelected(url: String?) {
-        if (url.isNullOrEmpty()) {
-            Snackbar.make(news_list, "No URL assigned to this news", Snackbar.LENGTH_LONG).show()
-        } else {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            startActivity(intent)
-        }
+    override fun onItemSelected(item: RedditNewsItem?) {
+        item?.let { myListener.elementSelected(item) }
+    }
+
+    override fun onItemDismissed(item: RedditNewsItem?) {
+        item?.let { itemReaded(it) }
+    }
+
+    lateinit var myListener: ElementSelectedListener
+
+    fun setListener(listener: ElementSelectedListener) {
+        myListener = listener
     }
 
     companion object {
@@ -53,6 +55,7 @@ class NewsFragment : Fragment(), NewsDelegateAdapter.onViewSelectedListener {
         newsViewModel.newsState.observe(this, Observer<NewsState> {
             manageState(it)
         })
+
     }
 
     private fun manageState(kedditState: NewsState?) {
@@ -70,7 +73,11 @@ class NewsFragment : Fragment(), NewsDelegateAdapter.onViewSelectedListener {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return container?.inflate(R.layout.news_fragment)
     }
 
@@ -104,11 +111,22 @@ class NewsFragment : Fragment(), NewsDelegateAdapter.onViewSelectedListener {
     }
 
     private fun requestNews() {
-        /**
-         * first time will send empty string for 'after' parameter.
-         * Next time we will have redditNews set with the next page to
-         * navigate with the 'after' param.
-         */
         newsViewModel.fetchNews(redditNews?.after.orEmpty())
+    }
+
+    interface ElementSelectedListener {
+        fun elementSelected(item: RedditNewsItem)
+    }
+
+    fun itemReaded(item: RedditNewsItem) {
+        val news: ArrayList<RedditNewsItem> = ArrayList()
+        news.addAll(newsAdapter.getNews() as ArrayList)
+
+        if (news.contains(item)) {
+            news.remove(item)
+        }
+
+        news_list.adapter = newsAdapter
+        newsAdapter.clearAndAddNews(news)
     }
 }

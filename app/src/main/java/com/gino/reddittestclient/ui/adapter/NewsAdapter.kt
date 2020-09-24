@@ -7,12 +7,13 @@ import com.gino.reddittestclient.utils.AdapterConstants
 import com.gino.reddittestclient.utils.RedditNewsItem
 import com.gino.reddittestclient.utils.ViewType
 import com.gino.reddittestclient.utils.ViewTypeDelegateAdapter
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author gino.ghiotto
  */
-class NewsAdapter(listener: NewsDelegateAdapter.onViewSelectedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsAdapter(listener: NewsDelegateAdapter.onViewSelectedListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: ArrayList<ViewType>
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
@@ -67,4 +68,15 @@ class NewsAdapter(listener: NewsDelegateAdapter.onViewSelectedListener) : Recycl
 
 
     private fun getLastPosition() = if (items.lastIndex == -1) 0 else items.lastIndex
+
+    fun itemReaded(item: RedditNewsItem) {
+        for (newsItem in items) {
+            if (newsItem is RedditNewsItem) {
+                if (newsItem as RedditNewsItem == item) {
+                    items.remove(newsItem)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
 }

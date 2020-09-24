@@ -6,7 +6,8 @@ import com.gino.reddittestclient.data.NewsAPI
 import com.gino.reddittestclient.data.RedditNewsResponse
 import com.gino.reddittestclient.utils.RedditNews
 import com.gino.reddittestclient.utils.RedditNewsItem
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -35,12 +36,17 @@ class NewsViewModel @Inject constructor(
         val dataResponse = response.data
         val news = dataResponse.children.map {
             val item = it.data
-            RedditNewsItem(item.author, item.title, item.num_comments,
-                item.created, item.thumbnail, item.url)
+            RedditNewsItem(
+                item.author, item.title, item.num_comments,
+                item.created, item.thumbnail, item.url, false
+            )
         } as ArrayList
         return RedditNews(
             dataResponse.after.orEmpty(),
             dataResponse.before.orEmpty(),
-            news)
+            news
+        )
     }
+
+
 }
